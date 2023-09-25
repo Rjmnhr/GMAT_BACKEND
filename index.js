@@ -4,6 +4,8 @@ const Cors = require("cors");
 const bodyParser = require("body-parser");
 const pool = require("./mySQL-DB");
 const gmatRoutes = require("./routes/gmat-routes");
+const userRoutes = require("./routes/users-route");
+const otpAuth = require("./routes/otp-auth");
 
 //App config
 const app = express();
@@ -29,5 +31,9 @@ pool
   });
 
 app.use("/api/gmat", gmatRoutes);
+
+app.use("/api/user", userRoutes);
+
+app.use("/api/otp", otpAuth);
 
 app.listen(port, () => console.log(`server is up on ${port}`));
