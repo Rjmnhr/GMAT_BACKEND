@@ -6,6 +6,7 @@ const pool = require("./mySQL-DB");
 const gmatRoutes = require("./routes/gmat-routes");
 const userRoutes = require("./routes/users-route");
 const otpAuth = require("./routes/otp-auth");
+const examRoutes = require("./routes/exam-routes");
 
 //App config
 const app = express();
@@ -35,5 +36,7 @@ app.use("/api/gmat", gmatRoutes);
 app.use("/api/user", userRoutes);
 
 app.use("/api/otp", otpAuth);
+
+app.use("/api/exams", examRoutes);
 
 app.listen(port, () => console.log(`server is up on ${port}`));

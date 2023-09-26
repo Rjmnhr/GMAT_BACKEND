@@ -16,21 +16,19 @@ router.post("/send-otp", (req, res) => {
 
   // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
-    port: 587,
-    secure: false,
+    service: "Gmail",
     auth: {
-      user: "info@2ndstorey.com",
-      pass: "secondstorey",
+      user: "team@adefteducation.com", // Replace with your email address
+      pass: "zscjqwwiaymvypco", // Replace with the App Password you generated
     },
   });
 
   // Set up email data
   const mailOptions = {
-    from: "info@2ndstorey.com",
+    from: "team@adefteducation.com",
     to: email,
-    subject: "Your One-Time Password (OTP) for 2nd Storey",
-    text: `Thank you for using 2nd Storey. To complete your login or verification process, please use the following one-time password (OTP):
+    subject: "Your One-Time Password (OTP) for Adeft Education",
+    text: `Thank you for using  Adeft Education. To complete your login or verification process, please use the following one-time password (OTP):
     
 Your OTP: ${otp}
   
@@ -41,12 +39,12 @@ Security Reminder:
 Keep this OTP confidential, and do not share it with anyone, including our support team.
 We will never ask you for your OTP through email, phone, or any other means. If you receive such a request, please report it to us immediately.
 If you didn't request this OTP or believe it to be a mistake, please disregard this email.
-If you encounter any issues or have questions, please don't hesitate to contact our support team at info@2ndstorey.com or indradeep.mazumdar@gmail.com.
+If you encounter any issues or have questions, please don't hesitate to contact our support team at team@adefteducation.com or indradeep.mazumdar@gmail.com.
 
-Thank you for choosing 2nd Storey.
+Thank you for choosing  Adeft Education.
 
 Best regards,
-The 2nd Storey Team
+The  Adeft Education Team
     
     `,
   };

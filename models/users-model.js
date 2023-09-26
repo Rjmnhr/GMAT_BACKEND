@@ -2,6 +2,24 @@ const pool = require("../mySQL-DB");
 const CryptoJS = require("crypto-js");
 
 const Users = {
+  getAllUsers: async () => {
+    const connection = await pool.getConnection();
+
+    try {
+      const query = `SELECT * FROM users`;
+
+      // Set the result character encoding to utf8mb4
+      const [rows] = await connection.query(query);
+
+      return rows;
+    } catch (err) {
+      // Handle errors here
+      console.error(err);
+      throw err;
+    } finally {
+      connection.release(); // Release the connection back to the pool
+    }
+  },
   createGoogleUser: async (createGoogleUser) => {
     const connection = await pool.getConnection();
 
