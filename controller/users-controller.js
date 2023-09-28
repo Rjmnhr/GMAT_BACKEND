@@ -12,16 +12,18 @@ const notifyByMail = (data) => {
 
   // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: "smtp-mail.outlook.com",
+    port: 587,
+    secure: false,
     auth: {
-      user: "team@adefteducation.com", // Replace with your email address
-      pass: "zscjqwwiaymvypco", // Replace with the App Password you generated
+      user: "info@2ndstorey.com",
+      pass: "secondstorey",
     },
   });
 
   // Set up email data
   const mailOptions = {
-    from: "team@adefteducation.com",
+    from: "info@2ndstorey.com",
     to: "indradeep.mazumdar@gmail.com",
     subject: `New Customer Registration Notification`,
     text: `Hello Adeft Education,
@@ -98,10 +100,18 @@ const UsersController = {
   },
   createUser: async (req, res) => {
     try {
-      const data = await Users.createUser(req.body);
+      const CreateUser = await Users.createUser(req.body);
+
+      if (!CreateUser) return res.status(200).json("creating user failed");
+
       notifyByMail(req.body);
 
-      res.status(200).json(data);
+      const newUser = (await Users.loginUser(req.body))[0];
+
+      const accessToken = generateAccessToken(newUser.id);
+
+      const { password, ...other } = newUser;
+      return res.status(200).json({ ...other, accessToken });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: err });

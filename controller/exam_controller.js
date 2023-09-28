@@ -11,17 +11,19 @@ const notifyByMail = (data) => {
 
   // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: "smtp-mail.outlook.com",
+    port: 587,
+    secure: false,
     auth: {
-      user: "team@adefteducation.com", // Replace with your email address
-      pass: "zscjqwwiaymvypco", // Replace with the App Password you generated
+      user: "info@2ndstorey.com",
+      pass: "secondstorey",
     },
   });
 
   // Set up email data
   const mailOptions = {
-    from: "team@adefteducation.com",
-    to: "indradeep.mazumdar@gmail.com",
+    from: "info@2ndstorey.com",
+    to: "indradeep.mazumdar@gmail.com ",
     subject: `GMAT Practice Exam Completion Notification`,
     text: `Hello Adeft Education,
   

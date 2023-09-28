@@ -16,16 +16,18 @@ router.post("/send-otp", (req, res) => {
 
   // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: "smtp-mail.outlook.com",
+    port: 587,
+    secure: false,
     auth: {
-      user: "team@adefteducation.com", // Replace with your email address
-      pass: "zscjqwwiaymvypco", // Replace with the App Password you generated
+      user: "info@2ndstorey.com",
+      pass: "secondstorey",
     },
   });
 
   // Set up email data
   const mailOptions = {
-    from: "team@adefteducation.com",
+    from: "info@2ndstorey.com",
     to: email,
     subject: "Your One-Time Password (OTP) for Adeft Education",
     text: `Thank you for using  Adeft Education. To complete your login or verification process, please use the following one-time password (OTP):
