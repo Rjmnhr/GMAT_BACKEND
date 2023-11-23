@@ -7,6 +7,7 @@ const gmatRoutes = require("./routes/gmat-routes");
 const userRoutes = require("./routes/users-route");
 const otpAuth = require("./routes/otp-auth");
 const examRoutes = require("./routes/exam-routes");
+const profilerRoutes = require("./routes/profiler-routes");
 
 //App config
 const app = express();
@@ -32,11 +33,9 @@ pool
   });
 
 app.use("/api/gmat", gmatRoutes);
-
 app.use("/api/user", userRoutes);
-
 app.use("/api/otp", otpAuth);
-
 app.use("/api/exams", examRoutes);
+app.use("/api/profiler", profilerRoutes);
 
 app.listen(port, () => console.log(`server is up on ${port}`));
