@@ -41,6 +41,40 @@ const ProfilerModel = {
       connection.release(); // Release the connection back to the pool
     }
   },
+  getCollegeInformation: async (getCollegeInformation) => {
+    const connection = await pool.getConnection();
+
+    const { safe, achievable, stretch } = getCollegeInformation;
+
+    try {
+      // Query for Safe
+      const safeQuery = `SELECT * FROM college_information WHERE category = ?`;
+      const [safeRows] = await connection.query(safeQuery, [safe]);
+
+      // Query for Achievable
+      const achievableQuery = `SELECT * FROM college_information WHERE category = ?`;
+      const [achievableRows] = await connection.query(achievableQuery, [
+        achievable,
+      ]);
+
+      // Query for Stretch
+      const stretchQuery = `SELECT * FROM college_information WHERE category = ?`;
+      const [stretchRows] = await connection.query(stretchQuery, [stretch]);
+
+      // Return an object with the three result sets
+      return {
+        safe: safeRows,
+        achievable: achievableRows,
+        stretch: stretchRows,
+      };
+    } catch (err) {
+      // Handle errors here
+      console.error(err);
+      throw err;
+    } finally {
+      connection.release(); // Release the connection back to the pool
+    }
+  },
 };
 
 module.exports = ProfilerModel;
