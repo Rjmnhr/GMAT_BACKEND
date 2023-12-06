@@ -14,15 +14,15 @@ const notifyByMail = (data) => {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "noreply@adefteducation.com", // Replace with your email address
-      pass: "tyjyatrnivkvbodi", // Replace with the App Password you generated
+      user: "team@adefteducation.com", // Replace with your email address
+      pass: "zjbc qwbj gjus yhrx", // Replace with the App Password you generated
     },
   });
-
   // Set up email data
   const mailOptions = {
-    from: "noreply@adefteducation.com",
-    to: "indradeep.mazumdar@gmail.com",
+    from: "team@adefteducation.com",
+    // to: "indradeep.mazumdar@gmail.com",
+    to: "renjithcm.renju@gmail.com",
     subject: `New Customer Registration Notification`,
     text: `Hello Adeft Education,
     
@@ -98,6 +98,10 @@ const UsersController = {
   },
   createUser: async (req, res) => {
     try {
+      const existingUser = (await Users.loginUser(req.body))[0];
+
+      if (existingUser) return res.status(400).json("Duplication Entry");
+
       const CreateUser = await Users.createUser(req.body);
 
       if (!CreateUser) return res.status(200).json("creating user failed");
@@ -115,12 +119,11 @@ const UsersController = {
       res.status(500).json({ message: err });
     }
   },
-
   loginUser: async (req, res) => {
     try {
       const userData = (await Users.loginUser(req.body))[0];
 
-      if (!userData) return res.status(200).json("Wrong username or password");
+      if (!userData) return res.status(200).json(404);
 
       const bytes = CryptoJS.AES.decrypt(
         userData.password,
@@ -129,7 +132,7 @@ const UsersController = {
       const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
 
       if (originalPassword !== req.body.password)
-        return res.status(200).json("Wrong username or password");
+        return res.status(200).json(404);
 
       const accessToken = generateAccessToken(userData.id);
       const { password, ...other } = userData;
@@ -139,20 +142,46 @@ const UsersController = {
       res.status(500).json(err);
     }
   },
-  changePassword: async (req, res) => {
+  resetPassword: async (req, res) => {
     try {
       const password = req.body.password;
       const email = req.body.email;
       const existingUser = (await Users.loginUser({ email: email }))[0];
 
-      const data = await Users.ChangePassword({
-        id: existingUser.ID,
+      const data = await Users.resetPassword({
+        id: existingUser.id,
         password: password,
       });
       res.status(200).json(data);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: err });
+    }
+  },
+  changeEmail: async (req, res) => {
+    try {
+      const { email, id } = req.body;
+      const existingUser = (await Users.loginUser({ email: email }))[0];
+
+      if (existingUser) return res.status(200).json(404);
+
+      const data = await Users.changeEmail(req.body);
+      res.status(200).json(200);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: err });
+    }
+  },
+
+  checkForExistingUser: async (req, res) => {
+    try {
+      const userData = (await Users.loginUser(req.body))[0];
+
+      if (userData) return res.status(200).json(true);
+      return res.status(200).json(false);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json(err);
     }
   },
 };

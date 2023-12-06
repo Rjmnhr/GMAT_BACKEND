@@ -19,13 +19,13 @@ router.post("/send-otp", (req, res) => {
     service: "Gmail",
     auth: {
       user: "team@adefteducation.com", // Replace with your email address
-      pass: "tyjyatrnivkvbodi", // Replace with the App Password you generated
+      pass: "zjbc qwbj gjus yhrx", // Replace with the App Password you generated
     },
   });
 
   // Set up email data
   const mailOptions = {
-    from: "noreply@adefteducation.com",
+    from: "team@adefteducation.com",
     to: email,
     subject: "Your One-Time Password (OTP) for Adeft Education",
     text: `Thank you for using  Adeft Education. To complete your login or verification process, please use the following one-time password (OTP):
