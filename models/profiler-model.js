@@ -45,21 +45,36 @@ const ProfilerModel = {
     const connection = await pool.getConnection();
 
     const { safe, achievable, stretch } = getCollegeInformation;
+    let listOfCountries = getCollegeInformation.countries.split(",");
+    const placeholders = listOfCountries.map(() => "?").join(",");
 
     try {
       // Query for Safe
-      const safeQuery = `SELECT * FROM college_information WHERE category = ?`;
-      const [safeRows] = await connection.query(safeQuery, [safe]);
+      const safeQuery = `SELECT * FROM college_information WHERE category = ? AND country IN (${placeholders})`;
+
+      const loggableQuery = connection.format(safeQuery, [
+        [safe],
+        ...listOfCountries,
+      ]);
+
+      const [safeRows] = await connection.query(safeQuery, [
+        [safe],
+        ...listOfCountries,
+      ]);
 
       // Query for Achievable
-      const achievableQuery = `SELECT * FROM college_information WHERE category = ?`;
+      const achievableQuery = `SELECT * FROM college_information WHERE category = ? AND country IN (${placeholders})`;
       const [achievableRows] = await connection.query(achievableQuery, [
-        achievable,
+        [achievable],
+        ...listOfCountries,
       ]);
 
       // Query for Stretch
-      const stretchQuery = `SELECT * FROM college_information WHERE category = ?`;
-      const [stretchRows] = await connection.query(stretchQuery, [stretch]);
+      const stretchQuery = `SELECT * FROM college_information WHERE category = ? AND country IN (${placeholders})`;
+      const [stretchRows] = await connection.query(stretchQuery, [
+        [stretch],
+        ...listOfCountries,
+      ]);
 
       // Return an object with the three result sets
       return {
