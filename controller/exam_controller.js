@@ -65,10 +65,33 @@ const ExamController = {
       res.status(500).json({ message: err });
     }
   },
+  getUserExamDataFocus: async (req, res) => {
+    try {
+      const data = await ExamModel.getUserExamDataFocus(req.body);
+
+      return res.status(200).json(data);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: err });
+    }
+  },
   storeExamData: async (req, res) => {
     console.log(req.body);
     try {
       const data = await ExamModel.storeExamData(req.body);
+      if (!data) return;
+      notifyByMail(req.body);
+
+      return res.status(200).json("stored successfully");
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: err });
+    }
+  },
+  storeExamDataFocus: async (req, res) => {
+    console.log(req.body);
+    try {
+      const data = await ExamModel.storeExamDataFocus(req.body);
       if (!data) return;
       notifyByMail(req.body);
 
