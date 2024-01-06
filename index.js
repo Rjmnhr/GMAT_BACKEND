@@ -9,7 +9,7 @@ const otpAuth = require("./routes/otp-auth");
 const examRoutes = require("./routes/exam-routes");
 const profilerRoutes = require("./routes/profiler-routes");
 const tokenRoutes = require("./routes/verify-token");
-
+const trackDataRoutes = require("./routes/track-data-route")
 //App config
 const app = express();
 const port = process.env.PORT || 8003;
@@ -39,5 +39,5 @@ app.use("/api/otp", otpAuth);
 app.use("/api/exams", examRoutes);
 app.use("/api/profiler", profilerRoutes);
 app.use("/api/token", tokenRoutes);
-
+app.use("/api/track-data", trackDataRoutes);
 app.listen(port, () => console.log(`server is up on ${port}`));
