@@ -46,7 +46,7 @@ const ProfilerModel = {
 
     const { safe, achievable, stretch } = getCollegeInformation;
     let listOfCountries = getCollegeInformation.countries?.split(",");
-    const placeholders = listOfCountries.map(() => "?").join(",");
+    const placeholders = listOfCountries?.map(() => "?").join(",");
 
     try {
       // Query for Safe
