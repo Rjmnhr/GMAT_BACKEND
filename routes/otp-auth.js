@@ -10,6 +10,7 @@ router.post("/send-otp", (req, res) => {
 
   const secret = otplib.authenticator.generateSecret();
   const otp = otplib.authenticator.generate(secret);
+  console.log("🚀 ~ router.post ~ otp:", otp);
 
   // Store OTP in cache with the email as the key
   otpCache.set(email, otp, 600); // Set OTP to expire in 10 minutes (600 seconds)
@@ -75,7 +76,7 @@ router.post("/verify-otp", (req, res) => {
 
     otpCache.del(email);
 
-    res.json({ message: "OTP verified successfully" });
+    res.status(200).json({ message: "OTP verified successfully" });
   } else {
     res.status(400).json({ message: "Invalid OTP" });
   }
