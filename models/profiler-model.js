@@ -45,7 +45,7 @@ const ProfilerModel = {
     const connection = await pool.getConnection();
 
     const { safe, achievable, stretch } = getCollegeInformation;
-    let listOfCountries = getCollegeInformation.countries.split(",");
+    let listOfCountries = getCollegeInformation.countries?.split(",");
     const placeholders = listOfCountries.map(() => "?").join(",");
 
     try {
