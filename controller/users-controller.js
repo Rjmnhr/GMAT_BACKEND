@@ -2,9 +2,9 @@ const Users = require("../models/users-model");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-
+const getUserID = require("../utils/getUserID");
 function generateAccessToken(userId) {
-  return jwt.sign({ id: userId }, process.env.SECRET_KEY, { expiresIn: "5d" });
+  return jwt.sign({ id: userId }, process.env.SECRET_KEY, { expiresIn: "6h" });
 }
 
 const notifyByMail = (data) => {
@@ -21,8 +21,8 @@ const notifyByMail = (data) => {
   // Set up email data
   const mailOptions = {
     from: "team@adefteducation.com",
-    to: "indradeep.mazumdar@gmail.com",
-    // to: "renjithcm.renju@gmail.com",
+    // to: "indradeep.mazumdar@gmail.com",
+    to: "renjithcm.renju@gmail.com",
     subject: `New Customer Registration Notification`,
     text: `Hello Adeft Education,
     
@@ -30,6 +30,8 @@ We are pleased to inform you that a new customer has registered on our platform.
     
 Customer Name: ${first_name}  ${last_name}
 Email Address: ${email}
+
+Payment of Rs. 5,000 is credited to stripe account, you will be receiving a receipt shortly
    
     
 This new customer has expressed interest in our services and products.
@@ -53,11 +55,12 @@ Adeft Education Team
 };
 
 const UsersController = {
-  getAllUsers: async (req, res) => {
+  getUserDetails: async (req, res) => {
+    const userID = getUserID(req);
     try {
-      const data = await Users.getAllUsers(req.body);
+      const data = await Users.getUserDetails(userID);
 
-      res.status(200).json(data);
+      res.status(200).json({ status: 200, data: data[0] });
     } catch (err) {
       console.error(err);
 
@@ -113,7 +116,9 @@ const UsersController = {
       const accessToken = generateAccessToken(newUser.id);
 
       const { password, ...other } = newUser;
-      return res.status(200).json({ ...other, accessToken });
+      return res
+        .status(200)
+        .json({ ...other, accessToken: accessToken, status: 200 });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: err });
@@ -123,7 +128,10 @@ const UsersController = {
     try {
       const userData = (await Users.loginUser(req.body))[0];
 
-      if (!userData) return res.status(200).json(404);
+      if (!userData)
+        return res
+          .status(200)
+          .json({ status: 404, message: "Wrong password or username" });
 
       const bytes = CryptoJS.AES.decrypt(
         userData.password,
@@ -132,11 +140,15 @@ const UsersController = {
       const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
 
       if (originalPassword !== req.body.password)
-        return res.status(200).json(404);
+        return res
+          .status(200)
+          .json({ status: 404, message: "Wrong password or username" });
 
       const accessToken = generateAccessToken(userData.id);
-      const { password, ...other } = userData;
-      return res.status(200).json({ ...other, accessToken });
+      const { ...other } = userData;
+      return res
+        .status(200)
+        .json({ ...other, accessToken: accessToken, status: 200 });
     } catch (err) {
       console.error(err);
       res.status(500).json(err);

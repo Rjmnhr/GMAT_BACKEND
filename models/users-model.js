@@ -2,11 +2,11 @@ const pool = require("../mySQL-DB");
 const CryptoJS = require("crypto-js");
 
 const Users = {
-  getAllUsers: async () => {
+  getUserDetails: async (id) => {
     const connection = await pool.getConnection();
 
     try {
-      const query = `SELECT * FROM users`;
+      const query = `SELECT id , first_name, last_name, user_type, phone FROM users where id = ${id}`;
 
       // Set the result character encoding to utf8mb4
       const [rows] = await connection.query(query);

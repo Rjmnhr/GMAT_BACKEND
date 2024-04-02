@@ -1,8 +1,9 @@
 const express = require("express");
+const authenticateToken = require("../utils/auth");
 const UsersController = require("../controller/users-controller");
 const router = express.Router();
 
-router.get("/get-all", UsersController.getAllUsers);
+router.get("/details", authenticateToken, UsersController.getUserDetails);
 router.post("/signup", UsersController.createUser);
 router.post("/login", UsersController.loginUser);
 router.post("/create-google-user", UsersController.createGoogleUser);

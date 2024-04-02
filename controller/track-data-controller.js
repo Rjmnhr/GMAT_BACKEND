@@ -2,7 +2,6 @@ const TrackedData = require("../models/track-data-model");
 
 const TrackDataController = {
   saveTrackedData3: async (req, res) => {
-    console.log("🚀 ~ saveTrackedData3: ~ req:", req.body)
     try {
       const dataToSave = {
         ...req.body,

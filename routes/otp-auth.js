@@ -10,7 +10,7 @@ router.post("/send-otp", (req, res) => {
 
   const secret = otplib.authenticator.generateSecret();
   const otp = otplib.authenticator.generate(secret);
-  console.log("🚀 ~ router.post ~ otp:", otp);
+  console.log("🚀 ~ router.post ~ email-send-otp:", email);
 
   // Store OTP in cache with the email as the key
   otpCache.set(email, otp, 600); // Set OTP to expire in 10 minutes (600 seconds)
@@ -63,8 +63,11 @@ The  Adeft Education Team
 
 router.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
+  console.log("🚀 ~ router.post ~ email-verify:", email);
+  console.log("🚀 ~ router.post ~ otp-verify:", otp);
 
   const storedOTP = otpCache.get(email);
+  console.log("🚀 ~ router.post ~ storedOTP-verify:", storedOTP);
 
   if (!storedOTP) {
     res.status(400).json({ message: "OTP data not found" });
