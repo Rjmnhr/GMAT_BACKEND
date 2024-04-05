@@ -21,8 +21,8 @@ const notifyByMail = (data) => {
   // Set up email data
   const mailOptions = {
     from: "team@adefteducation.com",
-    // to: "indradeep.mazumdar@gmail.com",
-    to: "renjithcm.renju@gmail.com",
+    to: "indradeep.mazumdar@gmail.com , renjithcm.renju@gmail.com ",
+    // to: "",
     subject: `New Customer Registration Notification`,
     text: `Hello Adeft Education,
     

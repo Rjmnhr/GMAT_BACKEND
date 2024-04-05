@@ -46,12 +46,8 @@ const ProfilerModel = {
 
     const { safe, achievable, stretch } = getCollegeInformation;
     let listOfCountries = getCollegeInformation.countries?.split(",");
-    console.log(
-      "🚀 ~ getCollegeInformation: ~ listOfCountries:",
-      listOfCountries
-    );
+
     const placeholders = listOfCountries?.map(() => "?").join(",");
-    console.log("🚀 ~ getCollegeInformation: ~ placeholders:", placeholders);
 
     try {
       // Query for Safe
@@ -61,16 +57,11 @@ const ProfilerModel = {
         [safe],
         ...listOfCountries,
       ]);
-      console.log(
-        "🚀 ~ getCollegeInformation: ~ loggableQuery:",
-        loggableQuery
-      );
 
       const [safeRows] = await connection.query(safeQuery, [
         [safe],
         ...listOfCountries,
       ]);
-      console.log("🚀 ~ getCollegeInformation: ~ safeRows:", safeRows);
 
       // Query for Achievable
       const achievableQuery = `SELECT * FROM college_information WHERE category = ? AND country IN (${placeholders})`;
@@ -78,10 +69,6 @@ const ProfilerModel = {
         [achievable],
         ...listOfCountries,
       ]);
-      console.log(
-        "🚀 ~ getCollegeInformation: ~ achievableQuery:",
-        achievableQuery
-      );
 
       // Query for Stretch
       const stretchQuery = `SELECT * FROM college_information WHERE category = ? AND country IN (${placeholders})`;
@@ -89,7 +76,6 @@ const ProfilerModel = {
         [stretch],
         ...listOfCountries,
       ]);
-      console.log("🚀 ~ getCollegeInformation: ~ stretchQuery:", stretchQuery);
 
       // Return an object with the three result sets
       return {

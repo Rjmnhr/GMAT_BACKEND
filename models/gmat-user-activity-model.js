@@ -114,8 +114,8 @@ const Users = {
     const connection = await pool.getConnection();
 
     try {
-      const query = `INSERT INTO gmat_score_card (score_card_id ,user_id,total_score, qa_scaled_score, qa_questions_correct,qa_questions_incorrect,qa_time_spent,verbal_scaled_score,verbal_questions_correct, verbal_questions_incorrect, verbal_time_spent, ir_scaled_score, ir_questions_correct, ir_time_spent, exam_category, practice_exam, attempt_date)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())`;
+      const query = `INSERT INTO gmat_score_card (score_card_id, user_id, total_score, qa_scaled_score, qa_questions_correct, qa_questions_incorrect, qa_time_spent, verbal_scaled_score, verbal_questions_correct, verbal_questions_incorrect, verbal_time_spent, ir_scaled_score, ir_questions_correct, ir_questions_incorrect, ir_time_spent, exam_category, practice_exam, attempt_date)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())`;
 
       // Set the result character encoding to utf8mb4
       const [rows] = await connection.query(query, [
